@@ -1,3 +1,5 @@
+import "./movie-item.js"
+
 class MovieList extends HTMLElement {
     set movies(movies) {
         this._movies = movies;
