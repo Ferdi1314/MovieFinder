@@ -1,3 +1,18 @@
+const DataSource = (onSuccess, onFailed) => {
+    this.onSuccess = onSuccess;
+    this.onFailed = onFailed;
+}
+
+DataSource.prototype.filterMovie = (keyword) => {
+    var filteredMovies = getData(keyword);
+
+    if (filteredMovies.length){
+        this.onSuccess(filteredMovies);
+    } else {
+        this.onFailed(keyword + "is not found");
+    }
+}
+
 const btnSearch = document.getElementById('btnSearch');
 const inputMovie = document.getElementById("movie");
 
@@ -28,3 +43,5 @@ btnSearch.addEventListener('click', () => {
     const input = inputMovie.value;
     getData(input);
 });
+
+export default DataSource;
