@@ -1,16 +1,16 @@
-function DataSource(onSuccess, onFailed) {
-    this.onSuccess = onSuccess;
-    this.onFailed = onFailed;
+import movies from './movies.js';
+
+class DataSource{
+    static searchMovie(keyword) {
+        return new Promise((resolve, reject) => {
+            const filteredMovies = movies.filter(movie => movie.title.toUpperCase().includes(keyword.toUpperCase()));
+            if (filteredMovies.length) {
+                resolve(filteredMovies);
+            } else {
+                reject(`${keyword} is not found`);
+            }
+        })
+    }
 }
 
-DataSource.prototype.searchClub = function (keyword) {
-    var filteredClubs = clubs.filter(function (club) {
-        return club.name.toUpperCase().includes(keyword.toUpperCase());
-    });
-
-    if (filteredClubs.length) {
-        this.onSuccess(filteredClubs);
-    } else {
-        this.onFailed(keyword + " is not found");
-    }
-};
+export default DataSource;

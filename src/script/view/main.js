@@ -1,36 +1,42 @@
-var main = function () {
-    var searchElement = document.querySelector("#searchElement");
-    var buttonSearchElement = document.querySelector("#searchButtonElement");
-    var clubListElement = document.querySelector("#clubList");
+import DataSource from '../data/data-source.js';
 
-    var onButtonSearchClicked = function () {
-        var dataSource = new DataSource(renderResult, fallbackResult);
-        dataSource.searchClub(searchElement.value);
+const main = () => {
+    const searchElement = document.querySelector("#searchElement");
+    const buttonSearchElement = document.querySelector("#searchButtonElement");
+    const movieListElement = document.querySelector("#movieList");
+
+    const onButtonSearchClicked = () => {
+        DataSource.searchMovie(searchElement.value)
+            .then(renderResult)
+            .catch(fallbackResult)
     };
 
-    var renderResult = function (results) {
-        clubListElement.innerHTML = "";
-        results.forEach(function (club) {
-            var name = club.name;
-            var fanArt = club.fanArt;
-            var description = club.description;
+    const renderResult = results => {
+        movieListElement.innerHTML = "";
+        results.forEach(movie => {
+            const {title, poster_path, overview, vote_average, release_date};
+            const movieElement = document.createElement("div");
+            movieElement.setAttribute("class", "club");
 
-            var clubElement = document.createElement("div");
-            clubElement.setAttribute("class", "club");
+            movieElement.innerHTML = `
+                <img class="poster-movie" src="${poster_path}" alt="Poster">
+                <div class="movie-info">
+                    <h2>${title}</h2>
+                    <p>Release date : ${release_date}</p>
+                    <p>Rating       : ${vote_average}</p>
+                    <p>${overview}</p>
+                </div>`;
 
-            clubElement.innerHTML = '<img class="fan-art-club" src="' + fanArt + '" alt="Fan Art">\n' +
-                '<div class="club-info">\n' +
-                '<h2>' + name + '</h2>\n' +
-                '<p>' + description + '</p>' +
-                '</div>';
-            clubListElement.appendChild(clubElement);
+            movieListElement.appendChild(movieElement);
         })
     };
 
-    var fallbackResult = function (message) {
-        clubListElement.innerHTML = "";
-        clubListElement.innerHTML += '<h2 class="placeholder">' + message + '</h2>'
+    const fallbackResult = message => {
+        movieListElement.innerHTML = "";
+        movieListElement.innerHTML += `<h2 class="placeholder">${message}</h2>`
     };
 
     buttonSearchElement.addEventListener("click", onButtonSearchClicked);
 };
+
+export default main;
